@@ -16,6 +16,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { FaChevronLeft, FaChevronRight, FaGift, FaLock, FaTruck } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/footer";
 
 // Interface cho sách
 interface Book {
@@ -43,16 +44,12 @@ const Books = () => {
   const [scrollX, setScrollX] = useState(0);
   const scrollAmount = 300;
   const navigate = useNavigate();
-
-  // Hàm scroll sách nổi bật
   const handleScroll = (direction: "next" | "prev") => {
     if (carouselRef.current) {
       const newX = direction === "next" ? scrollX - scrollAmount : scrollX + scrollAmount;
       setScrollX(newX);
     }
   };
-
-  // Lấy danh sách sách
   useEffect(() => {
     const fetchBooks = async () => {
       setLoading(true);
@@ -60,11 +57,9 @@ const Books = () => {
         const response = await axios.get(`/api/books`, {
           params: category ? { category } : {},
         });
-
-        // Chuyển `_id` thành `id`
         const formattedBooks = response.data.map((book: any) => ({
           ...book,
-          id: book._id, // Sửa lỗi undefined ID
+          id: book._id, 
         }));
 
         setBooks(formattedBooks);
@@ -77,21 +72,18 @@ const Books = () => {
     fetchBooks();
   }, [category]);
 
-  // Lấy sách nổi bật
   useEffect(() => {
     axios
       .get("/api/books/featured")
       .then((response) => {
         const formattedBooks = response.data.map((book: any) => ({
           ...book,
-          id: book._id, // Sửa lỗi undefined ID
+          id: book._id, 
         }));
         setFeaturedBooks(formattedBooks);
       })
       .catch((error) => console.error("Lỗi khi lấy sách nổi bật:", error));
   }, []);
-
-  // Xử lý click vào sách
   const handleBookClick = (id?: string) => {
     if (!id) {
       console.error("Lỗi: ID sách không hợp lệ", id);
@@ -102,7 +94,6 @@ const Books = () => {
 
   return (
     <Container sx={{ py: 5 }}>
-      {/* Hiển thị sách nổi bật */}
       <Box textAlign="center" p={4}>
         <Typography variant="h4" fontWeight={600} gutterBottom>
           Nổi bật
@@ -115,8 +106,6 @@ const Books = () => {
           >
             <FaChevronLeft size={30} />
           </Button>
-
-          {/* Danh sách sách nổi bật */}
           <motion.div
             ref={carouselRef}
             style={{ display: "flex", gap: "20px", overflow: "hidden", padding: "10px" }}
@@ -151,8 +140,6 @@ const Books = () => {
           </Button>
         </Box>
       </Box>
-
-      {/* Danh sách sách */}
       <Typography variant="h4" mt={5} gutterBottom>
         Tất Cả Sách 📖
       </Typography>

@@ -9,11 +9,9 @@ const BookDetail = () => {
     const [book, setBook] = useState<any>(null);
     const [error, setError] = useState("");
     const [categoryName, setCategoryName] = useState("");
-    const [quantity, setQuantity] = useState<number>(1); // State for the quantity
+    const [quantity, setQuantity] = useState<number>(1); 
     const token = localStorage.getItem("token");
     const decoded = token ? JSON.parse(atob(token.split(".")[1])) : null;
-
-    // Use useNavigate to redirect to the Cart page
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -32,8 +30,6 @@ const BookDetail = () => {
         };
         fetchBook();
     }, [id]);
-
-    // Chỉ gọi API danh mục sau khi book đã được cập nhật
     useEffect(() => {
         if (!book?.category) return;
 
@@ -50,8 +46,6 @@ const BookDetail = () => {
         };
         fetchCategory();
     }, [book]);
-
-    // Thêm vào giỏ hàng và điều hướng đến trang giỏ hàng
     const addToCart = async () => {
         try {
             const token = localStorage.getItem("token");
@@ -59,22 +53,32 @@ const BookDetail = () => {
                 alert("Vui lòng đăng nhập trước!");
                 return;
             }
-            
-            await axios.post(
-                "/api/cart/add",
-                { bookId: book._id, quantity },
-                { headers: { Authorization: `Bearer ${token}` } }
-            );
+    
+            const currentCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    
+            const existingItem = currentCart.find((item: any) => item.bookId === book._id);
+    
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                currentCart.push({
+                    bookId: book._id,
+                    title: book.title,
+                    price: book.price,
+                    quantity: quantity,
+                    imageUrl: book.imageUrl,
+                });
+            }
+            localStorage.setItem("cart", JSON.stringify(currentCart));
+    
             alert("Đã thêm vào giỏ hàng!");
-
-            // Navigate to the Cart page after adding the item to the cart
+    
             navigate("/cart");
         } catch (error) {
             console.error("Lỗi khi thêm vào giỏ hàng:", error);
             alert("Thêm vào giỏ hàng thất bại!");
         }
     };
-
     if (error) return <Typography color="error">{error}</Typography>;
 
     return book ? (
@@ -104,17 +108,12 @@ const BookDetail = () => {
                     </Box>
 
                     <CardContent sx={{ ml: 5, flex: 1 }}>
-                        {/* Tiêu đề */}
                         <Typography variant="h4" fontWeight="bold">{book.title}</Typography>
                         <Typography color="textSecondary" variant="subtitle1" mt={1}>Tác giả: {book.author}</Typography>
-
-                        {/* Mô tả */}
                         <Typography mt={2} sx={{ fontSize: "0.9rem", lineHeight: 1.6 }}>
                             {book.description}
                         </Typography>
                         <Rating name="read-only" value={book.rating || 4.5} readOnly sx={{ mt: 1 }} />
-
-                        {/* Giá + Số lượng đã bán */}
                         <Typography mt={2} fontWeight="bold" fontSize={26} color="primary">
                             {book.price} ₫
                         </Typography>
@@ -122,16 +121,12 @@ const BookDetail = () => {
                             Đã bán: {book.sold || 0} cuốn
                         </Typography>
                         <Divider sx={{ my: 2 }} />
-
-                        {/* Thông tin sách */}
                         <Box mt={2}>
                             <Typography variant="body2"><b>Thể loại:</b> {categoryName}</Typography>
                             <Typography variant="body2"><b>Nhà xuất bản:</b> {book.publisher}</Typography>
                             <Typography variant="body2"><b>Năm xuất bản:</b> {book.year}</Typography>
                             <Typography variant="body2"><b>Số trang:</b> {book.pages}</Typography>
                         </Box>
-
-                        {/* Quantity input */}
                         <Box mt={2}>
                             <TextField
                                 label="Số lượng"
@@ -142,16 +137,12 @@ const BookDetail = () => {
                                 fullWidth
                             />
                         </Box>
-
-                        {/* Nút hành động */}
                         <Box mt={4} display="flex" gap={3}>
                             <Button variant="contained" color="primary" size="large" onClick={addToCart}>
                                 Thêm vào giỏ hàng
                             </Button>
                             <Button variant="outlined" size="large">Yêu thích</Button>
                         </Box>
-
-                        {/* Thông tin ưu đãi */}
                         <Box mt={3}>
                             <Typography variant="body2" sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                                 ✅ Miễn phí vận chuyển đơn trên 300K

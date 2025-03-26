@@ -4,14 +4,17 @@ import mongoose from "mongoose";
 import bookRoutes from "./routes/bookroutes";
 import path from "path";
 import cors from "cors";
-import cartRoutes from "./routes/cartroutes";
+// import orderRoutes from "./routes/orderroutes";
+
 import categoryRoutes from "./routes/categoryRoutes"; 
 import authRoutes from "./routes/authroutes";
+import bodyParser from "body-parser";
+import { authenticate } from "./middleware/authmiddleware";
 dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use("/api", bookRoutes);  // Đảm bảo đúng prefix "/api"
+app.use("/api", bookRoutes);  
 app.use((req, res, next) => {
   console.log(`Received request: ${req.method} ${req.path}`);
   next();
@@ -23,7 +26,9 @@ app.use(
     credentials: true,
   })
 );
-app.use("/api/cart", cartRoutes); 
+app.use(bodyParser.json()); 
+// app.use("/cart", cartRoutes);
+// app.use("/api/orders", authenticate, orderRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/auth", authRoutes);
 mongoose

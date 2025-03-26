@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import BookModel from "../models/bookmodel";
-import Category from "../models/category"; // Nhập mô hình Category
+import Category from "../models/category";
 import multer from "multer";
 
-// Lấy tất cả sách với bộ lọc
+
 export const getAllBooks = async (req: Request, res: Response) => {
   try {
     const { category, q } = req.query;
@@ -23,7 +23,6 @@ export const getAllBooks = async (req: Request, res: Response) => {
   }
 };
 
-// Lấy sách nổi bật
 export const getFeaturedBooks = async (req: Request, res: Response) => {
   try {
     const featuredBooks = await BookModel.find().sort({ rating: -1 }).limit(5);
@@ -33,7 +32,6 @@ export const getFeaturedBooks = async (req: Request, res: Response) => {
   }
 };
 
-// Lấy chi tiết sách theo ID
 export const getBookById = async (req: Request, res: Response): Promise<void> => {
   try {
     const book = await BookModel.findById(req.params.id);
@@ -48,19 +46,19 @@ export const getBookById = async (req: Request, res: Response): Promise<void> =>
 };
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "uploads/");  // Path where images will be saved
+    cb(null, "uploads/");  
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);  // Unique file name
+    cb(null, Date.now() + "-" + file.originalname); 
   },
 });
 
 const upload = multer({ storage: storage }); 
-// Tạo mới sách và liên kết với danh mục
+
 export const createBook = async (req: Request, res: Response) => {
   try {
     const { title, author, price, description, categoryId } = req.body;
-    const image = req.file ? req.file.path : null;  // Assuming image is being uploaded correctly
+    const image = req.file ? req.file.path : null;  
 
     const newBook = new BookModel({
       title,

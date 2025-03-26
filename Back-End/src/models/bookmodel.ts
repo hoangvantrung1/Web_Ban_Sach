@@ -1,4 +1,4 @@
-// bookmodel.ts
+
 import mongoose, { Schema, Document } from "mongoose";
 
 interface IBook extends Document {
@@ -6,7 +6,7 @@ interface IBook extends Document {
   author: string;
   price: number;
   description: string;
-  categoryId: mongoose.Types.ObjectId; // Should be ObjectId
+  categoryId: mongoose.Types.ObjectId; 
   image: string;
 }
 

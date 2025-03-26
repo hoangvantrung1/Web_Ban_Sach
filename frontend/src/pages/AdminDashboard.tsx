@@ -80,7 +80,7 @@ const AdminDashboard: React.FC = () => {
           </TableHead>
           <TableBody>
             {filteredBooks.map((book) => (
-              <TableRow key={book._id}> {/* Dùng book._id thay vì book.id */}
+              <TableRow key={book._id}>
                 <TableCell>{book.title}</TableCell>
                 <TableCell>{book.author}</TableCell>
                 <TableCell>

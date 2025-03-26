@@ -65,8 +65,6 @@ const AddProduct: React.FC = () => {
   
       const data = await response.json();
       console.log("Thêm sản phẩm thành công:", data);
-  
-      // Reset form after success
       setTitle("");
       setAuthor("");
       setPrice("");
@@ -74,8 +72,6 @@ const AddProduct: React.FC = () => {
       setImage(null);
       setImagePreview(null);
       setError(null);
-  
-      // Redirect to dashboard
       setTimeout(() => {
         navigate("/admin/dashboard");
       }, 1000);

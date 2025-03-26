@@ -13,6 +13,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AddProduct from "./pages/AddProduct";
 import EditProduct from "./pages/EditProduct";
 import BookDetail from "./pages/BookDetail";
+import BookList from "./components/BookList";
+import Checkout from "./pages/Checkout";
 
 const theme = createTheme({
   palette: {
@@ -32,6 +34,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/books" element={<Books />} />
+          <Route path="/booklist" element={<BookList/>} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/profile" element={<Profile />} />
@@ -39,6 +42,8 @@ const App = () => {
           <Route path="/admin/add-book" element={<AddProduct />} />
           <Route path="/admin/edit-book/:id" element={<EditProduct />} />
           <Route path="/books/:id" element={<BookDetail/>} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/oders" element={<Orders />} />
         </Routes>
       </Router>
     </ThemeProvider>

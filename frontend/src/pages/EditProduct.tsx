@@ -42,7 +42,7 @@ const EditBook: React.FC = () => {
     formData.append("author", book.author);
     formData.append("price", book.price.toString());
     formData.append("description", book.description);
-    formData.append("category", book.category); // Gửi danh mục
+    formData.append("category", book.category); 
 
     if (selectedFile) {
       formData.append("image", selectedFile);
@@ -77,8 +77,6 @@ const EditBook: React.FC = () => {
       <TextField label="Tác giả" fullWidth name="author" value={book.author} onChange={handleChange} margin="normal" />
       <TextField label="Giá" type="number" fullWidth name="price" value={book.price} onChange={handleChange} margin="normal" />
       <TextField label="Miêu tả" fullWidth name="description" value={book.description} onChange={handleChange} margin="normal" />
-
-      {/* Chọn danh mục */}
       <FormControl fullWidth margin="normal">
         <InputLabel>Danh mục</InputLabel>
         <Select name="category" value={book.category} onChange={handleChange}>
@@ -89,11 +87,7 @@ const EditBook: React.FC = () => {
           ))}
         </Select>
       </FormControl>
-
-      {/* Hiển thị ảnh hiện tại */}
       {book.imageUrl && <img src={`http://127.0.0.1:3000${book.imageUrl}`} alt="Book" width="150" style={{ margin: "10px 0" }} />}
-
-      {/* Input file để chọn ảnh mới */}
       <input type="file" accept="image/*" name="image" onChange={handleFileChange} />
 
       <Button onClick={handleEditBook} variant="contained" color="primary" sx={{ marginTop: "20px" }}>

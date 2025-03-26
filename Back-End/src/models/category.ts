@@ -13,7 +13,7 @@ const categorySchema = new Schema<ICategory>({
   slug: { type: String, required: true },
 });
 
-// Tạo slug tự động trước khi lưu
+
 categorySchema.pre("save", function (next) {
   if (this.isNew) {
     this.slug = slugify(this.name, { lower: true });

@@ -1,20 +1,18 @@
-import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/database";
-import User from "../models/usermodel";
+import mongoose from "mongoose";
 
-class Order extends Model {
-  public id!: number;
-  public userId!: number;
-  public totalAmount!: number;
-}
+const orderSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  items: [
+    {
+      bookId: { type: mongoose.Schema.Types.ObjectId, ref: "Book", required: true },
+      quantity: { type: Number, required: true },
+      price: { type: Number, required: true },
+    },
+  ],
+  total: { type: Number, required: true },
+  status: { type: String, enum: ["Đã nhận đơn", "Đang giao hàng", "Hoàn thành"], default: "Đã nhận đơn" },
+  createdAt: { type: Date, default: Date.now },
+});
 
-Order.init(
-  {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    userId: { type: DataTypes.INTEGER, references: { model: User, key: "id" } },
-    totalAmount: { type: DataTypes.FLOAT, allowNull: false },
-  },
-  { sequelize, modelName: "order" }
-);
-
+const Order = mongoose.model("Order", orderSchema);
 export default Order;

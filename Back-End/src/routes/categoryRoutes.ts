@@ -1,7 +1,7 @@
 import express from "express";
-import { createCategory } from "../controllers/categoryController";  // Đảm bảo controller đúng
+import { createCategory } from "../controllers/categoryController";  
 const router = express.Router();
 
-router.post("/", createCategory);  // Đảm bảo đúng route và controller
+router.post("/", createCategory);  
 
 export default router;

@@ -1,0 +1,10 @@
+{
+    "development": {
+      "username": "root",
+      "password": "matkhau123",
+      "database": "web_ban_sach",
+      "host": "127.0.0.1",
+      "dialect": "mysql"
+    }
+  }
+  
